@@ -4,7 +4,7 @@ const connectDB = async () => {
   const mongoUri = process.env.MONGODB_URI;
 
   if (!mongoUri) {
-    console.warn("Missing required environment: MONGODB_URI. Database features will be unavailable until it is set.");
+    console.warn("Missing environment variable: MONGODB_URI. Database features will be unavailable until it is set.");
     return null;
   }
 
@@ -15,7 +15,7 @@ const connectDB = async () => {
     console.log("MongoDB connected");
     return mongoose.connection;
   } catch (error) {
-    console.warn("MongoDB connection failed:", error.message
+    console.warn("MongoDB connection error:", error.message);
     return null;
   }
 };
