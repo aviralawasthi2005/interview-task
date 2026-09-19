@@ -167,6 +167,14 @@ test("HTTP Server Integration Tests", async (t) => {
     assert.equal(data.message, "Invalid or expired token");
   });
 
+  await t.test("GET / serves HTML frontend", async () => {
+    const res = await fetch(`${baseUrl}/`);
+    assert.equal(res.status, 200);
+    const text = await res.text();
+    assert.ok(text.includes("AegisAuth"));
+    assert.ok(text.includes("id=\"authSection\""));
+  });
+
   await t.test("GET non-existent API route returns 404 JSON", async () => {
     const res = await fetch(`${baseUrl}/api/unknown-endpoint`, {
       headers: { Accept: "application/json" },
@@ -178,3 +186,4 @@ test("HTTP Server Integration Tests", async (t) => {
     assert.equal(data.message, "Route not found");
   });
 });
+
