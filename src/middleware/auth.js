@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const { verifyAccessToken } = require("../utils/token");
 
 const authenticate = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -13,16 +13,16 @@ const authenticate = (req, res, next) => {
     return res.status(401).json({ success: false, message: "Invalid Bearer token format" });
   }
 
-  if (!process.env.JWT_SECRET) {
-    return res.status(500).json({ success: false, message: "Missing required environment variable: JWT_SECRET" });
-  }
-
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = verifyAccessToken(token);
     req.user = decoded;
     return next();
   } catch (error) {
-    return res.status(401).json({ success: false, message: "Invalid or expired token" });
+    const isExpired = error.name === "TokenExpiredError";
+    return res.status(401).json({
+      success: false,
+      message: isExpired ? "Token has expired" : "Invalid or expired token",
+    });
   }
 };
 

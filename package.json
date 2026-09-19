@@ -1,11 +1,12 @@
-﻿{
+{
   "name": "api",
   "version": "1.0.0",
   "description": "Node.js authentication API",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "test": "node --test test/*.test.js"
   },
   "keywords": [
     "node",
